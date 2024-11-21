@@ -1,0 +1,16 @@
+# Files
+.dockerignore
+.gitignore
+*.md
+Dockerfile
+LICENSE
+
+# Folders
+.git
+bin/
+obj/
+
+
+# ENVs
+.env
+.env.example

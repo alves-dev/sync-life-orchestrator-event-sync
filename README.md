@@ -1,1 +1,1 @@
-# SyncLife-Health-EventSync
+# EventSync
