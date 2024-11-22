@@ -15,7 +15,7 @@ namespace Broker.Rabbit
         {
             _connection = rabbitConnection;
             _queueName = Environment.GetEnvironmentVariable("RABBIT_QUEUE") ?? "default.queue";
-            _exchangeName = Environment.GetEnvironmentVariable("RABBIT_EXCHANGE") ?? "eexexexex";
+            _exchangeName = Environment.GetEnvironmentVariable("RABBIT_EXCHANGE") ?? "default.exchange";
         }
 
         public void StartListening()

@@ -8,7 +8,7 @@ namespace Broker.MQTT
 {
     public class MqttClientService
     {
-        private IMqttClient? _mqttClient;
+        private IMqttClient _mqttClient;
         private MqttClientOptions? _mqttOptions;
 
         private Events _events;
@@ -23,8 +23,7 @@ namespace Broker.MQTT
 
         public async Task StartListem()
         {
-           
-            string topic = Environment.GetEnvironmentVariable("MQTT_TOPIC") ?? "tototo";
+            string topic = Environment.GetEnvironmentVariable("MQTT_TOPIC") ?? "default_topic";
 
                 // Subscribe to a topic
             await _mqttClient.SubscribeAsync(topic);
@@ -42,7 +41,7 @@ namespace Broker.MQTT
 
                     return Task.CompletedTask;
                 };
-            
+            Console.WriteLine($"[MQTT] Inscrito no tópico: {topic}");
         }
 
     
@@ -60,7 +59,6 @@ namespace Broker.MQTT
 
         private void ProcessMessage(string topic, string message)
         {
-            // Implemente a lógica para tratar mensagens aqui
             Console.WriteLine($"[MQTT] Processando mensagem do tópico '{topic}': {message}");
             _events.LaunchMQTTMessageReceived(message);
         }

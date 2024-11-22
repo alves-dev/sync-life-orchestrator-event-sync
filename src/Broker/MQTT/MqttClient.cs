@@ -21,7 +21,6 @@ namespace Broker.MQTT
             int port = int.Parse(Environment.GetEnvironmentVariable("MQTT_PORT") ?? "1883");
             string user = Environment.GetEnvironmentVariable("MQTT_USER") ?? string.Empty;
             string password = Environment.GetEnvironmentVariable("MQTT_PASSWORD") ?? string.Empty;
-            string topic = Environment.GetEnvironmentVariable("MQTT_TOPIC") ?? "tototo";
 
             // Configura o cliente MQTT
             var factory = new MqttFactory();
@@ -39,7 +38,7 @@ namespace Broker.MQTT
 
             if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
             {
-                Console.WriteLine("[MQTT-Client] Connected to MQTT broker successfully.");
+                Console.WriteLine($"[MQTT-Client] Connected to MQTT broker {host}:{port} successfully.");
             }
         }
 

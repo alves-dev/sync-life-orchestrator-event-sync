@@ -33,7 +33,7 @@ class Program
 
             // Inicia o consumo das mensagens
             rabbitService.StartListening();
-            rabbitService.PublicMenssage("cjgfchkghgkghkv");
+            //rabbitService.PublicMenssage("cjgfchkghgkghkv");
 
 
 
@@ -49,20 +49,35 @@ class Program
             */
 
             //MQTT
-            mqttService.PublicMenssage("dillicia");
+            //mqttService.PublicMenssage("dillicia");
 
 
 
 
             // RUN
-            Console.WriteLine("Pressione [Enter] para encerrar...");
-            Console.ReadLine();
+            Console.WriteLine("Aplicação rodando. Pressione Ctrl+C para encerrar.");
+
+            using var cts = new CancellationTokenSource();
+            Console.CancelKeyPress += async (sender, e) =>
+            {
+                e.Cancel = true; // Impede a interrupção imediata
+                cts.Cancel();    // Envia o sinal de cancelamento
+                Console.WriteLine("Encerrando...");
+                await rabbitConnection.DisposeAsync();
+                await mqttClient.DisposeAsync();
+            };
+            Task.Delay(Timeout.Infinite, cts.Token).Wait();
+        }
+        catch (OperationCanceledException)
+        {
+            // Espera até ser cancelado
+            Console.WriteLine("Aplicação encerrada.");
         }
         finally
         {
             // Libera os recursos de forma assíncrona
             await rabbitConnection.DisposeAsync();
-            await mqttService.DisposeAsync();
+            await mqttClient.DisposeAsync();
         }
     }
 }
