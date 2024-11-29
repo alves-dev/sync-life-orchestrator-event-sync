@@ -15,7 +15,7 @@ namespace Broker.MQTT
             //Initialize();
         }
 
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             string host = Environment.GetEnvironmentVariable("MQTT_HOST") ?? "localhost";
             int port = int.Parse(Environment.GetEnvironmentVariable("MQTT_PORT") ?? "1883");
@@ -46,7 +46,7 @@ namespace Broker.MQTT
         {
             if (_mqttClient == null || connectResult.ResultCode != MqttClientConnectResultCode.Success)
             {
-                throw new InvalidOperationException("O canal não está disponível ou foi fechado.");
+                throw new InvalidOperationException("[MQTT-Client] O canal não está disponível ou foi fechado.");
             }
             return _mqttClient;
         }

@@ -6,14 +6,12 @@ using Orchestrator;
 
 namespace Broker.MQTT
 {
-    public class MqttClientService
+    public class MqttService
     {
-        private IMqttClient _mqttClient;
-        private MqttClientOptions? _mqttOptions;
+        private readonly IMqttClient _mqttClient;
+        private readonly Events _events;
 
-        private Events _events;
-
-        public MqttClientService(IMqttClient client,Events events)
+        public MqttService(IMqttClient client, Events events)
         {
             _mqttClient = client;
             _events = events;
@@ -25,39 +23,33 @@ namespace Broker.MQTT
         {
             string topic = Environment.GetEnvironmentVariable("MQTT_TOPIC") ?? "default_topic";
 
-                // Subscribe to a topic
             await _mqttClient.SubscribeAsync(topic);
 
-                // Callback function when a message is received
             _mqttClient.ApplicationMessageReceivedAsync += e =>
                 {
-
                     var topic = e.ApplicationMessage.Topic;
                     var payload = Encoding.UTF8.GetString(e.ApplicationMessage.PayloadSegment);
 
-                    // Lógica para processar mensagens recebidas
-                    ProcessMessage(topic, payload);
-
-
+                    HandleMessage(topic, payload);
                     return Task.CompletedTask;
                 };
             Console.WriteLine($"[MQTT] Inscrito no tópico: {topic}");
         }
 
-    
-        public async void PublicMenssage(string m)
+
+        public async void PublicMenssage(string topic, string message)
         {
-            var message = new MqttApplicationMessageBuilder()
-                        .WithTopic("topic_test")
-                        .WithPayload(m)
+            var mqttMessage = new MqttApplicationMessageBuilder()
+                        .WithTopic(topic)
+                        .WithPayload(message)
                         .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.ExactlyOnce)
                         .WithRetainFlag()
                         .Build();
 
-            await _mqttClient.PublishAsync(message);
+            await _mqttClient.PublishAsync(mqttMessage);
         }
 
-        private void ProcessMessage(string topic, string message)
+        private void HandleMessage(string topic, string message)
         {
             Console.WriteLine($"[MQTT] Processando mensagem do tópico '{topic}': {message}");
             _events.LaunchMQTTMessageReceived(message);
