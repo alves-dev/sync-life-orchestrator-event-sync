@@ -74,7 +74,8 @@ namespace Orchestrator
             }
             catch (Exception e)
             {
-                Console.WriteLine("Deu ruim né!");
+                Console.WriteLine("Deu ruim em GetEntityLiquidSummaryHealthyPayload!");
+                Console.WriteLine(e);
             }
             return null;
         }
@@ -97,7 +98,8 @@ namespace Orchestrator
             }
             catch (Exception e)
             {
-                Console.WriteLine("Deu ruim né!");
+                Console.WriteLine("Deu ruim em GetEntityLiquidAcceptablePayload!");
+                Console.WriteLine(e);
             }
             return null;
         }
