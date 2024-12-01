@@ -7,7 +7,7 @@ COPY . ./
 RUN dotnet restore
 
 # Compila a aplicação
-RUN dotnet publish
+RUN dotnet publish -c Release -o out
 
 # Etapa 2: Execução
 FROM mcr.microsoft.com/dotnet/runtime:8.0
