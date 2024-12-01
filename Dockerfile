@@ -16,5 +16,10 @@ WORKDIR /app
 # Copia os binários da etapa de construção
 COPY --from=build /app/out .
 
+# Configura o timezone para America/Sao_Paulo
+RUN apt-get update && apt-get install -y tzdata
+ENV TZ=America/Sao_Paulo
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Define o comando de entrada
 ENTRYPOINT ["dotnet", "event-sync.dll"]
