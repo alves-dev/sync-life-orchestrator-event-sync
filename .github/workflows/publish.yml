@@ -9,7 +9,7 @@ jobs:
     env:
       IMAGE_NAME: ghcr.io/alves-dev/synclife-orchestrator-event-sync
       IMAGE_TAG: $(date +%Y%m%d)  # Cria uma tag com a data de execução
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write

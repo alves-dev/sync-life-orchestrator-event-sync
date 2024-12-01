@@ -20,6 +20,7 @@ COPY --from=build /app/out .
 RUN apt-get update && apt-get install -y tzdata
 ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Define o comando de entrada
 ENTRYPOINT ["dotnet", "event-sync.dll"]
