@@ -20,7 +20,7 @@ class Program
             await rabbitClient.InitializeAsync();
             RabbitMqService rabbitService = new RabbitMqService(rabbitClient.GetChannel(), events);
 
-            new OrchestratorService(events, rabbitService);
+            new OrchestratorService(events, rabbitService, mqttService);
 
             // RUN
             Console.WriteLine("Aplicação rodando. Pressione Ctrl+C para encerrar.");

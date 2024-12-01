@@ -1,4 +1,5 @@
 using Broker.Rabbit;
+using Broker.MQTT;
 using System.Text.Json;
 
 namespace Orchestrator
@@ -7,11 +8,13 @@ namespace Orchestrator
     {
         private readonly Events _events;
         private readonly RabbitMqService _rabbitService;
+        private readonly MqttService _mqttService;
 
-        public OrchestratorService(Events events, RabbitMqService rabbitService)
+        public OrchestratorService(Events events, RabbitMqService rabbitService, MqttService mqttService)
         {
             _events = events;
             _rabbitService = rabbitService;
+            _mqttService = mqttService;
 
             RegisterListener();
         }
@@ -27,6 +30,23 @@ namespace Orchestrator
             _events.RabbitMessageReceived += (m) =>
             {
                 Console.WriteLine($"[Orchestrator] Mensagem do RABBIT recebida: {m}");
+                string type = getType(m);
+                if (type == "HEALTH.NUTRI_TRACK.LIQUID_SUMMARY.V1")
+                {
+                    string entityPayload = MenssageTransform.GetEntityLiquidSummaryHealthyPayload();
+                    _mqttService.PublicMenssage("homeassistant/sensor/health_nutri_track_liquid_summary_healthy_state/config", entityPayload);
+
+                    string healthyPayload = MenssageTransform.GetLiquidSummaryHealthyPayload(m);
+                    _mqttService.PublicMenssage("health/nutri/track/liquid/summary/healthy/state", healthyPayload);
+                }
+                else if (type == "HEALTH.NUTRI_TRACK.LIQUID_ACCEPTABLE.V1")
+                {
+                    string entityPayload = MenssageTransform.GetEntityLiquidAcceptablePayload();
+                    _mqttService.PublicMenssage("homeassistant/sensor/health_nutri_track_liquid_acceptable_state/config", entityPayload);
+
+                    string acceptablePayload = MenssageTransform.GetLiquidSummaryAcceptablePayload(m);
+                    _mqttService.PublicMenssage("health/nutri/track/liquid/acceptable/state", acceptablePayload);
+                }
             };
         }
 
