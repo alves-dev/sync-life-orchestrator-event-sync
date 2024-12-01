@@ -24,22 +24,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      -
-        name: AMD
-        run: |
-          docker buildx create --use --name mybuilder
-          docker buildx build . --platform linux/amd64 --tag ${{ env.IMAGE_NAME }}:latest-amd --push
-
-      -
-        name: ARM
-        run: |
-          docker buildx create --use --name builderARM
-          docker buildx build . --platform linux/arm64 --tag ${{ env.IMAGE_NAME }}:latest-arm --push
+      - 
+        name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
 
       -
         name: Build and Push Docker image
         run: |
-          docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
           docker buildx create --use --name mybuilder
           docker buildx build . --platform linux/amd64,linux/arm64 --tag ${{ env.IMAGE_NAME }}:latest --push
           docker buildx build . --platform linux/amd64,linux/arm64 --tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --push
