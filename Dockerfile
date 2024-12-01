@@ -7,10 +7,10 @@ COPY . ./
 RUN dotnet restore
 
 # Compila a aplicação
-RUN dotnet publish -c Release -o out
+RUN dotnet publish
 
 # Etapa 2: Execução
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/runtime:8.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 WORKDIR /app
 
 # Copia os binários da etapa de construção
