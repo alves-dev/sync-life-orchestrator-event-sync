@@ -70,11 +70,7 @@ namespace Orchestrator
 
             try
             {
-                var options = new JsonSerializerOptions
-                {
-                    TypeInfoResolver = JsonSerializer.DefaultTypeInfoResolver
-                };
-                return JsonSerializer.Serialize(json, options);
+                return JsonSerializer.Serialize(json);
             }
             catch (Exception e)
             {
@@ -98,11 +94,7 @@ namespace Orchestrator
 
             try
             {
-                var options = new JsonSerializerOptions
-                {
-                    TypeInfoResolver = JsonSerializer.DefaultTypeInfoResolver
-                };
-                return JsonSerializer.Serialize(json, options);
+                return JsonSerializer.Serialize(json);
             }
             catch (Exception e)
             {

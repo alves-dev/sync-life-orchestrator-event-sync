@@ -18,9 +18,8 @@ RUN dotnet build -c Release -o out -a $TARGETARCH
 
 FROM build AS publish
 RUN dotnet publish -c Release -o out \
-    #--runtime alpine-x64 \
     --self-contained true \
-    /p:PublishTrimmed=true \
+    #/p:PublishTrimmed=false \
     /p:PublishSingleFile=true \
     -a $TARGETARCH
 
