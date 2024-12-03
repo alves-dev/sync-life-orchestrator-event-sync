@@ -37,6 +37,21 @@ namespace Orchestrator
             }
         }
 
+        public static String GetLiquidSummaryUnhealthyPayload(string eventRabbit)
+        {
+            try
+            {
+                var jsonDoc = JsonDocument.Parse(eventRabbit);
+                int unhealthy = jsonDoc.RootElement.GetProperty("total_liquid").GetProperty("unhealthy").GetInt16();
+                return unhealthy.ToString();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[MenssageTransform] 'unhealthy' não encontrado.");
+                return "-1";
+            }
+        }
+
         public static String GetLiquidSummaryAcceptablePayload(string eventRabbit)
         {
             try
@@ -61,7 +76,7 @@ namespace Orchestrator
                 { "name", "Liquid Summary Healthy" },
                 { "object_id", "health.nutri.track.liquid.summary.healthy.state" },
                 { "unique_id", "health.nutri.track.liquid.summary.healthy.state" },
-                { "device_class", "water"},
+                { "device_class", "volume"},
                 { "unit_of_measurement", "mL"},
                 { "expire_after", GetSecondsUntilEndOfDay()},
                 { "state_topic", "health/nutri/track/liquid/summary/healthy/state"},
@@ -75,6 +90,33 @@ namespace Orchestrator
             catch (Exception e)
             {
                 Console.WriteLine("Deu ruim em GetEntityLiquidSummaryHealthyPayload!");
+                Console.WriteLine(e);
+            }
+            return null;
+        }
+
+        public static String? GetEntityLiquidSummaryUnhealthyPayload()
+        {
+
+            var json = new Dictionary<string, object>
+            {
+                { "name", "Liquid Summary Unhealthy" },
+                { "object_id", "health.nutri.track.liquid.summary.unhealthy.state" },
+                { "unique_id", "health.nutri.track.liquid.summary.unhealthy.state" },
+                { "device_class", "volume"},
+                { "unit_of_measurement", "mL"},
+                { "expire_after", GetSecondsUntilEndOfDay()},
+                { "state_topic", "health/nutri/track/liquid/summary/unhealthy/state"},
+                { "device", GetHealthDevice() }
+            };
+
+            try
+            {
+                return JsonSerializer.Serialize(json);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Deu ruim em GetEntityLiquidSummaryUnhealthyPayload!");
                 Console.WriteLine(e);
             }
             return null;

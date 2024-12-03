@@ -33,11 +33,17 @@ namespace Orchestrator
                 string type = getType(m);
                 if (type == "HEALTH.NUTRI_TRACK.LIQUID_SUMMARY.V1")
                 {
-                    string entityPayload = MenssageTransform.GetEntityLiquidSummaryHealthyPayload();
-                    _mqttService.PublicMenssage("homeassistant/sensor/health_nutri_track_liquid_summary_healthy_state/config", entityPayload);
+                    string entityHealthy = MenssageTransform.GetEntityLiquidSummaryHealthyPayload();
+                    _mqttService.PublicMenssage("homeassistant/sensor/health_nutri_track_liquid_summary_healthy_state/config", entityHealthy);
+
+                    string entityUnhealthy = MenssageTransform.GetEntityLiquidSummaryUnhealthyPayload();
+                    _mqttService.PublicMenssage("homeassistant/sensor/health_nutri_track_liquid_summary_unhealthy_state/config", entityUnhealthy);
+
+                    string unhealthyPayload = MenssageTransform.GetLiquidSummaryUnhealthyPayload(m);
+                    _mqttService.PublicMenssage("health/nutri/track/liquid/summary/healthy/state", unhealthyPayload);
 
                     string healthyPayload = MenssageTransform.GetLiquidSummaryHealthyPayload(m);
-                    _mqttService.PublicMenssage("health/nutri/track/liquid/summary/healthy/state", healthyPayload);
+                    _mqttService.PublicMenssage("health/nutri/track/liquid/summary/unhealthy/state", healthyPayload);
                 }
                 else if (type == "HEALTH.NUTRI_TRACK.LIQUID_ACCEPTABLE.V1")
                 {
