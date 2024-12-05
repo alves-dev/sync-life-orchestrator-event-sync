@@ -78,7 +78,7 @@ namespace Orchestrator
                 { "unique_id", "health.nutri.track.liquid.summary.healthy.state" },
                 { "device_class", "volume"},
                 { "unit_of_measurement", "mL"},
-                { "expire_after", GetSecondsUntilEndOfDay()},
+                // { "expire_after", GetSecondsUntilEndOfDay()},
                 { "state_topic", "health/nutri/track/liquid/summary/healthy/state"},
                 { "device", GetHealthDevice() }
             };
@@ -105,7 +105,7 @@ namespace Orchestrator
                 { "unique_id", "health.nutri.track.liquid.summary.unhealthy.state" },
                 { "device_class", "volume"},
                 { "unit_of_measurement", "mL"},
-                { "expire_after", GetSecondsUntilEndOfDay()},
+                // { "expire_after", GetSecondsUntilEndOfDay()},
                 { "state_topic", "health/nutri/track/liquid/summary/unhealthy/state"},
                 { "device", GetHealthDevice() }
             };
