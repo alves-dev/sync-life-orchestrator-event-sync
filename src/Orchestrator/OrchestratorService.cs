@@ -61,7 +61,8 @@ namespace Orchestrator
             return getType(message) switch
             {
                 "HEALTH.NUTRI_TRACK.LIQUID.V1" => "health.nutri-track",
-                _ => "dead.queu" //TODO: criar fila morta
+                "HEALTH.NUTRI_TRACK.SOLID.V1" => "health.nutri-track",
+                _ => "dead.queu"
             };
         }
 
