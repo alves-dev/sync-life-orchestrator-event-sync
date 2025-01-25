@@ -12,14 +12,12 @@ COPY . ./
 RUN dotnet restore
 
 # Compila a aplicação
-# RUN dotnet publish -c Release -o out
 RUN dotnet build -c Release -o out -a $TARGETARCH
 
 
 FROM build AS publish
 RUN dotnet publish -c Release -o out \
     --self-contained true \
-    #/p:PublishTrimmed=false \
     /p:PublishSingleFile=true \
     -a $TARGETARCH
 

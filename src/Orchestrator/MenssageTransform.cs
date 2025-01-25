@@ -157,14 +157,14 @@ namespace Orchestrator
             return device;
         }
 
-        private static int GetSecondsUntilEndOfDay()
-        {
-            DateTime now = DateTime.Now;
-            DateTime endOfDay = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+        // private static int GetSecondsUntilEndOfDay()
+        // {
+        //     DateTime now = DateTime.Now;
+        //     DateTime endOfDay = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
 
-            TimeSpan difference = endOfDay - now;
+        //     TimeSpan difference = endOfDay - now;
 
-            return (int)difference.TotalSeconds;
-        }
+        //     return (int)difference.TotalSeconds;
+        // }
     }
 }

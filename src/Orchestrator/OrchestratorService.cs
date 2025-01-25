@@ -53,6 +53,10 @@ namespace Orchestrator
                     string acceptablePayload = MenssageTransform.GetLiquidSummaryAcceptablePayload(m);
                     _mqttService.PublicMenssage("health/nutri/track/liquid/acceptable/state", acceptablePayload);
                 }
+                else
+                {
+                    Console.WriteLine($"Event: {type} not known");
+                }
             };
         }
 
@@ -62,6 +66,7 @@ namespace Orchestrator
             {
                 "HEALTH.NUTRI_TRACK.LIQUID.V1" => "health.nutri-track",
                 "HEALTH.NUTRI_TRACK.SOLID.V1" => "health.nutri-track",
+                "HEALTH.BODY_TRACK.SLEEP.V1" => "health.body-track",
                 _ => "dead.queu"
             };
         }
