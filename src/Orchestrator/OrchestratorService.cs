@@ -53,6 +53,19 @@ namespace Orchestrator
                     string acceptablePayload = MenssageTransform.GetLiquidSummaryAcceptablePayload(m);
                     _mqttService.PublicMenssage("health/nutri/track/liquid/acceptable/state", acceptablePayload);
                 }
+                else if (type == "NOTIFICATION.V1")
+                {
+                    string id = getNotificationId(m);
+
+                    string entityPayload = MenssageTransform.GetEntityNotificationConfigPayload(id);
+                    _mqttService.PublicMenssage($"homeassistant/sensor/notification-{id}/message/config", entityPayload);
+
+                    string entityState = MenssageTransform.GetEntityNotificationStatePayload(m);
+                    _mqttService.PublicMenssage($"notification/{id}/message/state", entityState);
+
+                    string entityAttributes = MenssageTransform.GetEntityNotificationAttributesPayload(m);
+                    _mqttService.PublicMenssage($"notification/{id}/message/attributes", entityAttributes);
+                }
                 else
                 {
                     Console.WriteLine($"Event: {type} not known");
@@ -83,6 +96,20 @@ namespace Orchestrator
                 Console.WriteLine("[Orchestrator] 'type' não encontrado.");
                 return "not_type";
             }
+        }
+
+        private string getNotificationId(string message)
+        {
+           try
+            {
+                var jsonDoc = JsonDocument.Parse(message);
+                return jsonDoc.RootElement.GetProperty("notification").GetProperty("id").GetString();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[Orchestrator] 'notification.id' não encontrado.");
+                return "not_notification_id";
+            } 
         }
     }
 }

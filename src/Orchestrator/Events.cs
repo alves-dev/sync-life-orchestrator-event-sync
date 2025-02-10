@@ -9,10 +9,6 @@ namespace Orchestrator
 
         public event MessageEventHandler MQTTMessageReceived;
 
-        // public event MessageEventHandler RabbitMessageToSend;
-
-        // public event MessageEventHandler MQTTMessageToSend;
-
         public void LaunchRabbitMessageReceived(string message)
         {
             RabbitMessageReceived?.Invoke(message);
@@ -22,15 +18,5 @@ namespace Orchestrator
         {
             MQTTMessageReceived?.Invoke(message);
         }
-
-        // public void LaunchRabbitMessageToSend(string message)
-        // {
-        //     RabbitMessageToSend?.Invoke(message);
-        // }
-
-        // public void LaunchMQTTMessageToSend(string message)
-        // {
-        //     MQTTMessageToSend?.Invoke(message);
-        // }
     }
 }

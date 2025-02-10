@@ -144,6 +144,59 @@ namespace Orchestrator
             return null;
         }
 
+        public static String? GetEntityNotificationConfigPayload(string id)
+        {
+
+            var json = new Dictionary<string, object>
+            {
+                { "name", $"Message: {id}" },
+                { "icon", "mdi:bell-circle" },
+                { "unique_id", $"notification.{id}.message" },
+                { "state_topic", $"notification/{id}/message/state"},
+                { "json_attributes_topic", $"notification/{id}/message/attributes"},
+                { "device", GetNotificationDevice() }
+            };
+
+            try
+            {
+                return JsonSerializer.Serialize(json);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Deu ruim em GetEntityNotificationConfigPayload!");
+                Console.WriteLine(e);
+            }
+            return null;
+        }
+
+        public static String GetEntityNotificationStatePayload(string eventRabbit)
+        {
+            try
+            {
+                var jsonDoc = JsonDocument.Parse(eventRabbit);
+                return jsonDoc.RootElement.GetProperty("notification").GetProperty("message").GetString();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[MenssageTransform] 'notification.message' não encontrado.");
+                return "-1";
+            }
+        }
+
+        public static String GetEntityNotificationAttributesPayload(string eventRabbit)
+        {
+            try
+            {
+                var jsonDoc = JsonDocument.Parse(eventRabbit);
+                return jsonDoc.RootElement.GetProperty("notification").ToString();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("[MenssageTransform] 'notification' não encontrado.");
+                return "-1";
+            }
+        }
+
         private static Device GetHealthDevice()
         {
             var device = new Device
@@ -157,14 +210,17 @@ namespace Orchestrator
             return device;
         }
 
-        // private static int GetSecondsUntilEndOfDay()
-        // {
-        //     DateTime now = DateTime.Now;
-        //     DateTime endOfDay = new DateTime(now.Year, now.Month, now.Day, 23, 59, 59);
+        private static Device GetNotificationDevice()
+        {
+            var device = new Device
+            {
+                Name = "Notification",
+                Manufacturer = "Event Sync",
+                Model = "Notification V1",
+                Identifiers = new[] { "event_sync_notification_message_v1" }
+            };
 
-        //     TimeSpan difference = endOfDay - now;
-
-        //     return (int)difference.TotalSeconds;
-        // }
+            return device;
+        }
     }
 }
