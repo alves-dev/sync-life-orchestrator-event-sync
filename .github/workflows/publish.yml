@@ -5,36 +5,7 @@ on:
     branches: main
 
 jobs:
-  publish-docker-image:
-    env:
-      IMAGE_NAME: ghcr.io/alves-dev/synclife-orchestrator-event-sync
-      IMAGE_TAG: $(date +%Y%m%d)  # Cria uma tag com a data de execução
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      -
-        uses: actions/checkout@v4
-      -
-        name: Login in ghcr
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - 
-        name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v1
-        with:
-          image: tonistiigi/binfmt:latest
-          platforms: all
-
-      -
-        name: Build and Push Docker image
-        run: |
-          docker buildx create --use --name mybuilder
-          docker buildx build . --platform linux/amd64,linux/arm64 --tag ${{ env.IMAGE_NAME }}:latest --push
-          docker buildx build . --platform linux/amd64,linux/arm64 --tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} --push
+  build:
+    uses: alves-dev/actions/.github/workflows/build-docker.yml@v1
+    with:
+      image-name: ghcr.io/alves-dev/synclife-orchestrator-event-sync
