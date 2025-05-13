@@ -23,18 +23,19 @@ namespace Orchestrator
         {
             _events.MQTTMessageReceived += (m) =>
             {
-                Console.WriteLine($"[Orchestrator] Mensagem do MQTT recebida: {m}");
+                Console.WriteLine($"[Orchestrator] Evento do MQTT recebido");
                 _rabbitService.PublicMenssage(getRoutingKeyByMessage(m), m);
             };
 
             _events.MQTTMessageReceivedV3 += (message) =>
             {
-                Console.WriteLine($"[Orchestrator] Mensagem do MQTT V3 recebida: {message}");
+                Console.WriteLine($"[Orchestrator] Evento V3 do MQTT recebido");
+                _rabbitService.PublicMenssageV3(new EventBaseV3(message));
             };
 
             _events.RabbitMessageReceived += (m) =>
             {
-                Console.WriteLine($"[Orchestrator] Mensagem do RABBIT recebida: {m}");
+                Console.WriteLine($"[Orchestrator] Evento do RABBIT recebido: {m}");
                 string type = getType(m);
                 if (type == "HEALTH.NUTRI_TRACK.LIQUID_SUMMARY.V1")
                 {

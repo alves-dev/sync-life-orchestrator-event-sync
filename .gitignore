@@ -1,7 +1,10 @@
 # Files
 .env
 
+SyncLife-Orchestrator-EventSync.sln
+
 # Folders
 /obj
 /bin
 /out
+/.vscode

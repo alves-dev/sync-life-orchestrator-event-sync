@@ -58,7 +58,8 @@ namespace Broker.MQTT
 
         private void HandleMessage(string topic, string message)
         {
-            Console.WriteLine($"[MQTT] Processando mensagem do tópico '{topic}': {message}");
+            Console.WriteLine("--------------------------");
+            Console.WriteLine($"[MQTT] Processando evento do tópico '{topic}': {message}");
 
             if (topic.Contains("v3"))
             {
