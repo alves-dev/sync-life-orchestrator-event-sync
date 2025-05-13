@@ -17,11 +17,17 @@ namespace Broker.Rabbit
             {
                 HostName = host,
                 UserName = user,
-                Password = password
+                Password = password,
+                ClientProperties = new Dictionary<string, object?>
+                {
+                    { "application", "event-sync" },
+                    { "framework", ".NET" },
+                    { "machine", Environment.MachineName }
+                }
             };
 
             // Estabelece a conexão de forma assíncrona
-            _connection = await factory.CreateConnectionAsync();
+            _connection = await factory.CreateConnectionAsync("event-sync");
 
             // Abre o canal
             _channel = await _connection.CreateChannelAsync();
