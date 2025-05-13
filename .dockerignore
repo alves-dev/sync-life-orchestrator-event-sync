@@ -9,7 +9,8 @@ LICENSE
 .git
 bin/
 obj/
-
+.vscode
+.dev
 
 # ENVs
 .env

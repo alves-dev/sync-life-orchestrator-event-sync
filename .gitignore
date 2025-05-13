@@ -7,4 +7,5 @@ SyncLife-Orchestrator-EventSync.sln
 /obj
 /bin
 /out
-/.vscode
+.vscode
+.dev
