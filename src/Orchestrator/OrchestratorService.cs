@@ -27,6 +27,11 @@ namespace Orchestrator
                 _rabbitService.PublicMenssage(getRoutingKeyByMessage(m), m);
             };
 
+            _events.MQTTMessageReceivedV3 += (message) =>
+            {
+                Console.WriteLine($"[Orchestrator] Mensagem do MQTT V3 recebida: {message}");
+            };
+
             _events.RabbitMessageReceived += (m) =>
             {
                 Console.WriteLine($"[Orchestrator] Mensagem do RABBIT recebida: {m}");

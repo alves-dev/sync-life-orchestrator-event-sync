@@ -21,9 +21,17 @@ namespace Broker.MQTT
 
         public async Task StartListem()
         {
-            string topic = Environment.GetEnvironmentVariable("MQTT_TOPIC") ?? "default_topic";
+            string?[] topics = new[]
+            {
+                Environment.GetEnvironmentVariable("MQTT_TOPIC"),
+                Environment.GetEnvironmentVariable("MQTT_TOPIC_V3")
+            };
 
-            await _mqttClient.SubscribeAsync(topic);
+            foreach (var topic in topics)
+            {
+                await _mqttClient.SubscribeAsync(topic);
+                Console.WriteLine($"[MQTT] Inscrito no tópico: {topic}");
+            }
 
             _mqttClient.ApplicationMessageReceivedAsync += e =>
                 {
@@ -33,7 +41,6 @@ namespace Broker.MQTT
                     HandleMessage(topic, payload);
                     return Task.CompletedTask;
                 };
-            Console.WriteLine($"[MQTT] Inscrito no tópico: {topic}");
         }
 
 
@@ -52,7 +59,15 @@ namespace Broker.MQTT
         private void HandleMessage(string topic, string message)
         {
             Console.WriteLine($"[MQTT] Processando mensagem do tópico '{topic}': {message}");
-            _events.LaunchMQTTMessageReceived(message);
+
+            if (topic.Contains("v3"))
+            {
+                _events.LaunchMQTTMessageReceivedV3(message);
+            }
+            else
+            {
+                _events.LaunchMQTTMessageReceived(message);
+            }
         }
 
         public async ValueTask DisposeAsync()
