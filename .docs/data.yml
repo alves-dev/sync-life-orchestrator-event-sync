@@ -1,0 +1,23 @@
+project:
+  title: &project_title Event Sync
+  description: &project_description Código responsável por fazer conversão de eventos entre os protocolos AMQP e MQTT
+  status: &project_status Em desenvolvimento # desenvolvimento, Finalizado
+  license: &project_license GPL-3 # GPL-3 MIT
+detail:
+  version: v1
+  description: *project_description
+  website:
+  topics: &topics
+    - csharp
+    - docker
+    - rabbitmq
+    - sync-life
+head:
+  version: v1
+  title: *project_title
+  description: *project_description
+  status: *project_status
+  topics: *topics
+footer:
+  version: v1
+  license: *project_license
